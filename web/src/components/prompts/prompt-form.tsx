@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import { useActionState } from 'react'
+import { useState, useActionState } from 'react'
 import { createPrompt } from '@/lib/actions/prompts'
+import { AIAssistantDialog } from './ai-assistant-dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -26,25 +27,49 @@ type Props = {
     submitLabel?: string
 }
 
+
+
 export function PromptForm({ categories, initialData, action, submitLabel = 'Create Prompt' }: Props) {
     const [state, formAction, isPending] = useActionState(action, {})
 
+    // Controlled state
+    const [title, setTitle] = useState(initialData?.title || '')
+    const [content, setContent] = useState(initialData?.content || '')
+    const [description, setDescription] = useState(initialData?.description || '')
+    const [tags, setTags] = useState(initialData?.tags?.join(', ') || '')
+    const [categoryId, setCategoryId] = useState(initialData?.categoryId?.toString() || '')
+    const [isPublic, setIsPublic] = useState(initialData?.isPublic ?? true)
+
+    const handleAIAccept = (data: { title: string, content: string, description: string, tags: string[] }) => {
+        setTitle(data.title)
+        setContent(data.content)
+        setDescription(data.description)
+        setTags(data.tags.join(', '))
+        // Keep category/public as is
+    }
+
     return (
         <Card className="w-full max-w-2xl mx-auto">
-            <CardHeader>
-                <CardTitle>{initialData ? 'Edit Prompt' : 'Create New Prompt'}</CardTitle>
-                <CardDescription>{initialData ? 'Update your prompt details.' : 'Share your prompt with the community.'}</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                <div className="space-y-1">
+                    <CardTitle>{initialData ? 'Edit Prompt' : 'Create New Prompt'}</CardTitle>
+                    <CardDescription>{initialData ? 'Update your prompt details.' : 'Share your prompt with the community.'}</CardDescription>
+                </div>
+                <AIAssistantDialog onAccept={handleAIAccept} currentContent={content} />
             </CardHeader>
             <form action={formAction}>
+                {/* Hidden inputs if formAction works with FormData directly, but since we are controlled, 
+                     the inputs will have values and names so FormData works automatically. */}
                 <CardContent className="space-y-6">
                     <div className="space-y-2">
                         <Label htmlFor="title">Title</Label>
                         <Input
                             id="title"
                             name="title"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
                             placeholder="e.g., Code Review Assistant"
                             required
-                            defaultValue={initialData?.title}
                         />
                         {state?.fieldErrors?.title && (
                             <p className="text-sm text-destructive">{state.fieldErrors.title[0]}</p>
@@ -53,7 +78,7 @@ export function PromptForm({ categories, initialData, action, submitLabel = 'Cre
 
                     <div className="space-y-2">
                         <Label htmlFor="categoryId">Category</Label>
-                        <Select name="categoryId" required defaultValue={initialData?.categoryId?.toString() || ""}>
+                        <Select name="categoryId" required value={categoryId} onValueChange={setCategoryId}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select a category" />
                             </SelectTrigger>
@@ -75,9 +100,10 @@ export function PromptForm({ categories, initialData, action, submitLabel = 'Cre
                         <Textarea
                             id="description"
                             name="description"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
                             placeholder="Short description of what (optional)"
                             className="resize-none h-20"
-                            defaultValue={initialData?.description || ''}
                         />
                     </div>
 
@@ -86,10 +112,11 @@ export function PromptForm({ categories, initialData, action, submitLabel = 'Cre
                         <Textarea
                             id="content"
                             name="content"
+                            value={content}
+                            onChange={e => setContent(e.target.value)}
                             placeholder="The actual prompt text..."
                             className="min-h-[200px] font-mono text-sm"
                             required
-                            defaultValue={initialData?.content}
                         />
                         {state?.fieldErrors?.content && (
                             <p className="text-sm text-destructive">{state.fieldErrors.content[0]}</p>
@@ -101,8 +128,9 @@ export function PromptForm({ categories, initialData, action, submitLabel = 'Cre
                         <Input
                             id="tags"
                             name="tags"
+                            value={tags}
+                            onChange={e => setTags(e.target.value)}
                             placeholder="coding, python, debug (comma separated)"
-                            defaultValue={initialData?.tags?.join(', ')}
                         />
                     </div>
 
@@ -110,8 +138,15 @@ export function PromptForm({ categories, initialData, action, submitLabel = 'Cre
                         <Checkbox
                             id="isPublic"
                             name="isPublic"
-                            defaultChecked={initialData?.isPublic ?? true}
+                            checked={isPublic}
+                            onCheckedChange={(checked) => setIsPublic(checked as boolean)}
                         />
+                        {/* Checkbox handling in FormData: uncheck sends nothing. We usually use a hidden input or ensure name is handled. 
+                            Radix Checkbox doesn't render native input by default unless using 'form' prop or similar? 
+                            Actually shadcn Checkbox is standard radix. 
+                            Wait, simple fix: Radix Checkbox handles it?
+                            Usually we include a hidden input for form submission if using native action. */}
+                        <input type="hidden" name="isPublic" value={isPublic ? 'on' : 'off'} />
                         <Label htmlFor="isPublic">Make this prompt public</Label>
                     </div>
 
