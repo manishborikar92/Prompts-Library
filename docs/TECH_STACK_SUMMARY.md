@@ -1,6 +1,6 @@
 # PromptBase - Tech Stack Summary
 
-**Quick Reference Guide**
+**Quick Reference Guide - Updated February 2026**
 
 ---
 
@@ -8,14 +8,14 @@
 
 | Category | Technology | Version | Why |
 |----------|-----------|---------|-----|
-| **Framework** | Next.js | 15.5 | Latest stable, Turbopack, React 19 support |
-| **UI Library** | React | 19 | Server Components, new hooks, Actions |
-| **Language** | TypeScript | 5.x | Type safety, better DX |
-| **Styling** | Tailwind CSS | 4.0 | 10x faster, CSS-first config |
-| **Components** | shadcn/ui | Latest | Copy-paste, full control |
-| **Database** | Supabase (PostgreSQL) | Latest | Best for Next.js, real-time, auth |
-| **ORM** | Drizzle | Latest | Lightweight, SQL-first, fast |
-| **AI** | Google AI Studio (Gemini) | 2.5/3 | Latest models, good pricing |
+| **Framework** | Next.js | 16.1.6 | Latest LTS, Turbopack, React 19 support |
+| **UI Library** | React | 19.2.4 | Server Components, new hooks, Actions |
+| **Language** | TypeScript | 5.9.x | Type safety, better DX |
+| **Styling** | Tailwind CSS | 4.1.18 | 10x faster, CSS-first config |
+| **Components** | shadcn/ui | CLI 3.8.2 | Copy-paste, full control |
+| **Database** | Supabase (PostgreSQL) | 2.94.1 | Best for Next.js, real-time, auth |
+| **ORM** | Drizzle | 1.0.0-beta.13 | Lightweight, SQL-first, fast |
+| **Auth** | Supabase Auth | Built-in | OAuth providers (GitHub), email/password |
 | **Deployment** | Vercel | Latest | Zero-config, built by Next.js team |
 
 ---
@@ -26,119 +26,43 @@
 ```json
 {
   "dependencies": {
-    "next": "^15.5.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "typescript": "^5.3.0",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     
-    "@google/genai": "^1.0.0",
-    "@supabase/supabase-js": "^2.39.0",
-    "drizzle-orm": "^0.29.0",
+    "@supabase/supabase-js": "^2.94.1",
+    "@supabase/ssr": "^0.6.1",
+    "drizzle-orm": "^1.0.0-beta.13",
+    "postgres": "^3.4.5",
     
-    "tailwindcss": "^4.0.0",
-    "@radix-ui/react-*": "latest",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
-    "tailwind-merge": "^2.2.0",
+    "zustand": "^5.0.11",
+    "react-hook-form": "^7.71.1",
+    "@hookform/resolvers": "^5.2.2",
+    "zod": "^4.3.6",
     
-    "react-hook-form": "^7.49.0",
-    "zod": "^3.22.0",
-    "@hookform/resolvers": "^3.3.0",
-    
-    "zustand": "^4.4.0",
-    "fuse.js": "^7.0.0",
-    "date-fns": "^3.0.0",
-    "lucide-react": "^0.309.0"
+    "fuse.js": "^7.1.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.563.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.0.0",
+    "class-variance-authority": "^0.7.1"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "drizzle-kit": "^0.20.0",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^15.5.0",
-    "prettier": "^3.1.0",
-    "prettier-plugin-tailwindcss": "^0.5.0"
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^22.12.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0",
+    "drizzle-kit": "^1.0.0-beta.13",
+    "tailwindcss": "^4.1.18",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "16.1.6",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "vitest": "^4.0.18",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@playwright/test": "^1.58.1"
   }
-}
-```
-
----
-
-## 🔧 Configuration Files
-
-### next.config.js
-```javascript
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
-  },
-  images: {
-    domains: ['supabase.co'],
-  },
-}
-
-module.exports = nextConfig
-```
-
-### tailwind.config.ts (v4)
-```typescript
-// @ts-check
-import { type Config } from 'tailwindcss'
-
-export default {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-} satisfies Config
-```
-
-### drizzle.config.ts
-```typescript
-import type { Config } from 'drizzle-kit'
-
-export default {
-  schema: './lib/db/schema.ts',
-  out: './lib/db/migrations',
-  driver: 'pg',
-  dbCredentials: {
-    connectionString: process.env.DATABASE_URL!,
-  },
-} satisfies Config
-```
-
-### tsconfig.json
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
 }
 ```
 
@@ -146,18 +70,20 @@ export default {
 
 ## 🌐 Environment Variables
 
-### .env.local
+### .env.example
 ```bash
-# Database (Supabase)
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL="https://xxx.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_xxx or eyJ..."
+
+# Database (Drizzle)
 DATABASE_URL="postgresql://..."
 DIRECT_URL="postgresql://..."
 
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL="https://xxx.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJ..."
-SUPABASE_SERVICE_ROLE_KEY="eyJ..."
+# GitHub OAuth (configured in Supabase Dashboard)
+# No secrets needed in app - stored in Supabase
 
-# Google AI Studio
+# Google AI (Optional)
 GOOGLE_AI_API_KEY="AIza..."
 
 # App Configuration
@@ -171,6 +97,9 @@ NODE_ENV="development"
 
 ### Development
 ```bash
+# Navigate to web directory
+cd web
+
 # Install dependencies
 npm install
 
@@ -203,18 +132,18 @@ npm run db:push
 
 # Open Drizzle Studio
 npm run db:studio
-
-# Seed database
-npm run db:seed
 ```
 
-### Deployment
+### Testing
 ```bash
-# Deploy to Vercel
-vercel
+# Run unit tests
+npm run test
 
-# Deploy to production
-vercel --prod
+# Run with coverage
+npm run test:coverage
+
+# Run E2E tests
+npm run test:e2e
 ```
 
 ---
@@ -227,7 +156,6 @@ vercel --prod
 | Time to Interactive | < 3s | Lighthouse |
 | Largest Contentful Paint | < 2.5s | Lighthouse |
 | Cumulative Layout Shift | < 0.1 | Lighthouse |
-| Total Blocking Time | < 300ms | Lighthouse |
 | Lighthouse Score | > 90 | Lighthouse |
 | Bundle Size | < 200KB | Bundle Analyzer |
 | API Response Time | < 200ms | Vercel Analytics |
@@ -243,17 +171,12 @@ vercel --prod
 - **shadcn/ui:** https://ui.shadcn.com
 - **Drizzle ORM:** https://orm.drizzle.team
 - **Supabase:** https://supabase.com/docs
-- **Google AI:** https://ai.google.dev/docs
+- **Auth.js:** https://authjs.dev
 
 ### Tools
 - **Vercel Dashboard:** https://vercel.com/dashboard
 - **Supabase Dashboard:** https://app.supabase.com
 - **Google AI Studio:** https://aistudio.google.com
-
-### Community
-- **Next.js Discord:** https://discord.gg/nextjs
-- **Tailwind Discord:** https://discord.gg/tailwindcss
-- **Supabase Discord:** https://discord.supabase.com
 
 ---
 
@@ -262,23 +185,19 @@ vercel --prod
 ### Colors (Tailwind v4 - OKLCH)
 ```css
 @theme {
-  --color-primary: oklch(0.5 0.2 250);
-  --color-secondary: oklch(0.6 0.15 200);
-  --color-accent: oklch(0.7 0.25 150);
-  --color-background: oklch(0.98 0 0);
-  --color-foreground: oklch(0.15 0 0);
+  --color-primary: oklch(0.65 0.2 250);
+  --color-secondary: oklch(0.55 0.15 280);
+  --color-accent: oklch(0.7 0.25 165);
+  --color-background: oklch(0.12 0.02 260);
+  --color-foreground: oklch(0.95 0 0);
 }
 ```
 
 ### Typography
-- **Font:** Inter (via next/font)
+- **Sans Font:** Inter (via next/font)
+- **Mono Font:** JetBrains Mono
 - **Headings:** font-bold
 - **Body:** font-normal
-- **Code:** font-mono
-
-### Spacing Scale
-- **Base:** 4px (0.25rem)
-- **Scale:** 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96
 
 ---
 
@@ -290,28 +209,12 @@ vercel --prod
 - **Focus:** Utilities, hooks, components
 
 ### Integration Tests
-- **Framework:** Playwright
-- **Focus:** User flows, API routes
+- **Framework:** Vitest
+- **Focus:** API routes, database queries
 
 ### E2E Tests
 - **Framework:** Playwright
-- **Focus:** Critical paths
-
----
-
-## 📈 Monitoring & Analytics
-
-### Performance
-- **Vercel Analytics:** Built-in
-- **Web Vitals:** Automatic tracking
-
-### Errors
-- **Sentry:** Error tracking (optional)
-- **Vercel Logs:** Built-in logging
-
-### Usage
-- **Supabase Analytics:** Database queries
-- **Custom Events:** Track user actions
+- **Focus:** Critical user flows
 
 ---
 
@@ -322,13 +225,11 @@ vercel --prod
 - ✅ Row Level Security (RLS) enabled
 - ✅ Input validation with Zod
 - ✅ CSRF protection (Next.js built-in)
-- ✅ Rate limiting on API routes
 - ✅ HTTPS only (Vercel automatic)
-- ✅ Content Security Policy
 - ✅ SQL injection prevention (Drizzle ORM)
 - ✅ XSS prevention (React automatic)
 
 ---
 
-**Last Updated:** February 5, 2026  
-**Version:** 1.0
+**Last Updated:** February 6, 2026  
+**Version:** 2.0

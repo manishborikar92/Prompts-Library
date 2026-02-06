@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Prompts](https://img.shields.io/badge/Prompts-58-blue.svg)]()
 [![Categories](https://img.shields.io/badge/Categories-20-green.svg)]()
+[![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black.svg)](https://nextjs.org)
 
 ---
 
@@ -12,7 +13,7 @@
 
 **Prompts Library** is an open-source collection of carefully crafted AI prompts designed for software developers. Use these prompts with ChatGPT, Claude, or any AI assistant to accelerate your development workflow.
 
-**PromptBase** is the web platform (coming soon) that brings this library to life with search, management, and AI-powered features.
+**PromptBase** is the web platform that brings this library to life with search, management, and AI-powered features.
 
 ---
 
@@ -20,7 +21,9 @@
 
 - 📚 **58 Professional Prompts** - Covering the entire development lifecycle
 - 🗂️ **20 Categories** - From code analysis to deployment
-- 🔍 **Easy Search** - Find prompts quickly with Python scripts
+- 🔍 **Easy Search** - Find prompts quickly with Python scripts or web UI
+- ✏️ **Prompt Editor** - Create and edit prompts online
+- 🤖 **AI Assistant** - Get prompt suggestions from Google Gemini
 - 📝 **Ready to Use** - Copy, customize, and use immediately
 - 🆓 **Free & Open Source** - MIT licensed
 
@@ -28,7 +31,30 @@
 
 ## 🚀 Quick Start
 
-### Browse Prompts
+### Option 1: Use the Web Application
+
+```bash
+# Clone the repository
+git clone https://github.com/manishborikar92/Prompts-Library.git
+cd Prompts-Library
+
+# Navigate to web app
+cd web
+
+# Install dependencies
+npm install
+
+# Copy environment template
+cp .env.example .env.local
+# Edit .env.local with your credentials
+
+# Run development server
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
+
+### Option 2: Browse Prompts Directly
 
 ```bash
 # Clone the repository
@@ -45,13 +71,63 @@ python scripts/search_prompts.py "API"
 python scripts/validate_prompts.py
 ```
 
-### Use a Prompt
+### Using a Prompt
 
 1. Browse `individual-prompts/` folder or use search
 2. Open the prompt file you need
 3. Copy the prompt text
 4. Customize placeholders (e.g., `[FILE_NAME]`, `[PROJECT]`)
 5. Paste into your AI assistant
+
+---
+
+## 📁 Repository Structure
+
+```
+Prompts-Library/
+├── web/                          # 🌐 Next.js 16 Web Application
+│   ├── src/
+│   │   ├── app/                  # App Router pages
+│   │   ├── components/           # React components
+│   │   ├── lib/                  # Utilities & database
+│   │   └── ...
+│   └── package.json
+│
+├── individual-prompts/           # 📝 58+ Prompt Files
+│   ├── 01_Code_Analysis_Bug_Fixing/
+│   ├── 02_Code_Refactoring_Optimization/
+│   └── ... (20 categories)
+│
+├── scripts/                      # 🔧 Python CLI Tools
+│   ├── list_prompts.py
+│   ├── search_prompts.py
+│   ├── merge_prompts.py
+│   ├── split_prompts.py
+│   └── validate_prompts.py
+│
+├── docs/                         # 📚 Documentation
+│   ├── DEVELOPMENT_PLAN.md
+│   ├── TECH_STACK_SUMMARY.md
+│   └── GETTING_STARTED.md
+│
+└── AI-Prompts-Master-Consolidated.md  # All prompts in one file
+```
+
+---
+
+## 🛠️ Tech Stack (Web Application)
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Next.js** | 16.1.6 | React framework with App Router |
+| **React** | 19.2.4 | UI library |
+| **TypeScript** | 5.9+ | Type safety |
+| **Tailwind CSS** | 4.1.18 | Styling |
+| **Drizzle ORM** | 1.0.0-beta | Database access |
+| **Auth.js** | 5.0.0-beta | Authentication |
+| **Supabase** | PostgreSQL | Database |
+
+See [docs/TECH_STACK_SUMMARY.md](docs/TECH_STACK_SUMMARY.md) for complete details.
 
 ---
 
@@ -172,14 +248,25 @@ We welcome contributions! Here's how you can help:
 3. Follow the existing format
 4. Submit a pull request
 
-### Improve Existing Prompts
-1. Open an issue describing the improvement
-2. Make your changes
+### Improve the Web Application
+1. Check [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) for tasks
+2. Open an issue to discuss your changes
 3. Submit a pull request
 
 ### Report Issues
 - Found a bug? [Open an issue](https://github.com/manishborikar92/Prompts-Library/issues)
 - Have a suggestion? [Start a discussion](https://github.com/manishborikar92/Prompts-Library/discussions)
+
+---
+
+## 📖 Documentation
+
+- **[docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md)** - Complete development plan
+- **[docs/TECH_STACK_SUMMARY.md](docs/TECH_STACK_SUMMARY.md)** - Tech stack reference
+- **[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)** - Setup guide
+- **[web/README.md](web/README.md)** - Web application guide
+- **[OVERVIEW.md](OVERVIEW.md)** - Package overview
+- **[QUICK_START.md](QUICK_START.md)** - Quick reference guide
 
 ---
 
