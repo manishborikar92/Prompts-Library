@@ -53,7 +53,7 @@ PromptBase is an AI-powered prompt management platform that allows developers to
 ## 🛠️ Tech Stack
 
 ### Frontend Framework
-**Next.js 15.5** (Latest stable - January 2025)
+**Next.js 16** (Latest stable - January 2025)
 - **Why:** Production-ready with Turbopack, React 19 support, improved caching
 - **Key Features:**
   - Turbopack (stable) - 10x faster builds
@@ -166,7 +166,7 @@ PromptBase is an AI-powered prompt management platform that allows developers to
 
 ```
 promptbase/
-├── app/                          # Next.js 15 App Router
+├── app/                          # Next.js 16 App Router
 │   ├── (auth)/                   # Auth routes group
 │   │   ├── login/
 │   │   └── signup/
@@ -569,7 +569,7 @@ DELETE /api/collections/:id      # Delete collection
 POST   /api/collections/:id/prompts  # Add prompt to collection
 ```
 
-### Server Actions (Next.js 15)
+### Server Actions (Next.js 16)
 
 ```typescript
 // app/actions/prompts.ts
@@ -606,7 +606,7 @@ export async function searchPrompts(query: string, filters: SearchFilters) {
 ### Phase 1: Foundation (Weeks 1-3)
 
 **Week 1: Setup & Infrastructure**
-- [ ] Initialize Next.js 15 project with TypeScript
+- [ ] Initialize Next.js 16 project with TypeScript
 - [ ] Configure Tailwind CSS v4
 - [ ] Set up Supabase project
 - [ ] Configure Drizzle ORM
@@ -817,7 +817,7 @@ USING (user_id = auth.uid());
 ## 📚 Additional Resources
 
 ### Documentation Links
-- [Next.js 15 Docs](https://nextjs.org/docs)
+- [Next.js 16 Docs](https://nextjs.org/docs)
 - [React 19 Docs](https://react.dev)
 - [Tailwind CSS v4 Docs](https://tailwindcss.com/docs)
 - [shadcn/ui Docs](https://ui.shadcn.com)

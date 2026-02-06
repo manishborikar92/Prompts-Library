@@ -11,7 +11,7 @@
 
 **Contents:**
 - 🎯 Project Overview & Vision
-- 🛠️ Complete Tech Stack (Next.js 15, React 19, Tailwind v4, etc.)
+- 🛠️ Complete Tech Stack (Next.js 16, React 19, Tailwind v4, etc.)
 - 🏗️ Architecture & Project Structure
 - ✨ Features & Requirements (3 phases)
 - 🗄️ Database Schema (SQL + Drizzle ORM)
@@ -212,7 +212,7 @@ All documentation follows these principles:
 ## 📚 Additional Resources
 
 ### Official Documentation
-- [Next.js 15 Docs](https://nextjs.org/docs)
+- [Next.js 16 Docs](https://nextjs.org/docs)
 - [React 19 Docs](https://react.dev)
 - [Tailwind CSS v4 Docs](https://tailwindcss.com/docs)
 - [shadcn/ui Docs](https://ui.shadcn.com)

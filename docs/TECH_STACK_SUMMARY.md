@@ -237,7 +237,7 @@ vercel --prod
 ## 🔗 Important Links
 
 ### Documentation
-- **Next.js 15:** https://nextjs.org/docs
+- **Next.js 16:** https://nextjs.org/docs
 - **React 19:** https://react.dev
 - **Tailwind v4:** https://tailwindcss.com/docs
 - **shadcn/ui:** https://ui.shadcn.com

@@ -131,7 +131,7 @@ We're building a modern web application to make this library even more powerful:
 - 🔗 **Sharing** - Share prompts with your team
 - 📚 **Collections** - Organize prompts your way
 
-**Tech Stack:** Next.js 15, React 19, Tailwind v4, Supabase, Google AI
+**Tech Stack:** Next.js 16, React 19, Tailwind v4, Supabase, Google AI
 
 See [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md) for details.
 

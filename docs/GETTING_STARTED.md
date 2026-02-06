@@ -31,7 +31,7 @@ cd Prompts-Library
 mkdir web
 cd web
 
-# Create new Next.js 15 app
+# Create new Next.js 16 app
 npx create-next-app@latest .
 
 # Options to select:
@@ -371,7 +371,7 @@ promptbase/
 
 ## ✅ Verification Checklist
 
-- [ ] Next.js 15 app running on http://localhost:3000
+- [ ] Next.js 16 app running on http://localhost:3000
 - [ ] Tailwind CSS working (styles applied)
 - [ ] shadcn/ui components installed
 - [ ] Supabase connection working
