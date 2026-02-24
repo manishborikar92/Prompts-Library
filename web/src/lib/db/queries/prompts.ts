@@ -1,20 +1,26 @@
 import { db } from '@/lib/db'
 import { prompts, categories, users, favorites } from '@/lib/db/schema'
-import { desc, eq, and, or, ilike } from 'drizzle-orm'
+import { desc, eq, and, or, ilike, sql } from 'drizzle-orm'
 
 export async function getPrompts(limit = 20, offset = 0, search?: string, userId?: string) {
     const data = await db.query.prompts.findMany({
         limit,
         offset,
         orderBy: [desc(prompts.createdAt)],
-        where: (prompts, { or, ilike }) =>
-            search
+        where: (prompts, { or, and, ilike, eq, sql }) => {
+            const searchCondition = search
                 ? or(
                     ilike(prompts.title, `%${search}%`),
                     ilike(prompts.content, `%${search}%`),
-                    ilike(prompts.description || '', `%${search}%`)
+                    prompts.description ? ilike(prompts.description, `%${search}%`) : undefined
                 )
-                : undefined,
+                : undefined;
+            const privacyCondition = or(
+                eq(prompts.isPublic, true),
+                userId ? eq(prompts.userId, userId) : sql`false`
+            );
+            return searchCondition ? and(searchCondition, privacyCondition) : privacyCondition;
+        },
         with: {
             category: true,
             user: true,
@@ -33,7 +39,13 @@ export async function getPrompts(limit = 20, offset = 0, search?: string, userId
 
 export async function getPromptById(id: string, userId?: string) {
     const data = await db.query.prompts.findFirst({
-        where: eq(prompts.id, id),
+        where: and(
+            eq(prompts.id, id),
+            or(
+                eq(prompts.isPublic, true),
+                userId ? eq(prompts.userId, userId) : sql`false`
+            )
+        ),
         with: {
             category: true,
             user: true,

@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false }
     return config
   },
+
+  turbopack: {},
 }
 
 export default nextConfig

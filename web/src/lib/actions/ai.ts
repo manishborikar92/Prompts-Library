@@ -3,6 +3,7 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { generateObject } from 'ai'
 import { z } from 'zod'
+import { createClient } from '@/lib/supabase/server'
 
 // Fallback mock generator if no API key
 async function mockGenerate(instruction: string) {
@@ -16,6 +17,10 @@ async function mockGenerate(instruction: string) {
 }
 
 export async function generatePromptWithAI(instruction: string, context?: string) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'Unauthorized AI execution.' }
+
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY
 
     if (!apiKey) {

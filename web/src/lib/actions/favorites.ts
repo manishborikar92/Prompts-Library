@@ -15,11 +15,21 @@ export async function toggleFavorite(promptId: string) {
     }
 
     try {
-        const existing = await db.query.favorites.findFirst({
-            where: and(eq(favorites.promptId, promptId), eq(favorites.userId, user.id)),
-        })
+        const result = await db.insert(favorites).values({
+            promptId,
+            userId: user.id,
+        }).onConflictDoNothing().returning({ id: favorites.id })
 
-        if (existing) {
+        if (result.length > 0) {
+            // Increment count since it was newly inserted
+            await db.update(prompts)
+                .set({ favoriteCount: sql`${prompts.favoriteCount} + 1` })
+                .where(eq(prompts.id, promptId))
+
+            revalidatePath('/prompts')
+            return { favorited: true }
+        } else {
+            // Already existed, therefore we are unfavoriting
             await db.delete(favorites)
                 .where(and(eq(favorites.promptId, promptId), eq(favorites.userId, user.id)))
 
@@ -30,19 +40,6 @@ export async function toggleFavorite(promptId: string) {
 
             revalidatePath('/prompts')
             return { favorited: false }
-        } else {
-            await db.insert(favorites).values({
-                promptId,
-                userId: user.id,
-            })
-
-            // Increment count
-            await db.update(prompts)
-                .set({ favoriteCount: sql`${prompts.favoriteCount} + 1` })
-                .where(eq(prompts.id, promptId))
-
-            revalidatePath('/prompts')
-            return { favorited: true }
         }
     } catch (error) {
         console.error('Favorite Error:', error)

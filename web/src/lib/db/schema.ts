@@ -8,6 +8,7 @@ import {
     timestamp,
     uuid,
     varchar,
+    uniqueIndex,
 } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
@@ -84,6 +85,7 @@ export const favorites = pgTable(
     (table) => [
         index('idx_favorites_user').on(table.userId),
         index('idx_favorites_prompt').on(table.promptId),
+        uniqueIndex('fav_user_prompt_unique').on(table.userId, table.promptId)
     ]
 )
 

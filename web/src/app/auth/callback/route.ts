@@ -32,15 +32,15 @@ export async function GET(request: Request) {
         const { error } = await supabase.auth.exchangeCodeForSession(code)
 
         if (!error) {
-            const forwardedHost = request.headers.get('x-forwarded-host')
             const isLocalEnv = process.env.NODE_ENV === 'development'
+            const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
             if (isLocalEnv) {
                 // In local dev, redirect to origin
                 return NextResponse.redirect(`${origin}${next}`)
-            } else if (forwardedHost) {
-                // In production with load balancer, use forwarded host
-                return NextResponse.redirect(`https://${forwardedHost}${next}`)
+            } else if (appUrl) {
+                // In production, use explicit predefined app url instead of forwardedHost
+                return NextResponse.redirect(`${appUrl}${next}`)
             } else {
                 return NextResponse.redirect(`${origin}${next}`)
             }
