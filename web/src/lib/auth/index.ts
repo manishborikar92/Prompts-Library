@@ -14,6 +14,25 @@ export async function getUser(): Promise<User | null> {
     const {
         data: { user },
     } = await supabase.auth.getUser()
+
+    if (user) {
+        // Ensure user exists in our local users table as a fallback 
+        // to prevent foreign key errors if Supabase triggers aren't set
+        try {
+            const { db } = await import('@/lib/db')
+            const { users } = await import('@/lib/db/schema')
+
+            await db.insert(users).values({
+                id: user.id,
+                email: user.email!,
+                name: user.user_metadata?.full_name || user.user_metadata?.name || '',
+                image: user.user_metadata?.avatar_url || '',
+            }).onConflictDoNothing()
+        } catch (error) {
+            console.error('Failed to sync user to database:', error)
+        }
+    }
+
     return user
 }
 

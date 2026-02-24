@@ -76,13 +76,15 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
+import { SiteHeader } from '@/components/layout/site-header'
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
         {/* Skip to main content for accessibility */}
         <a
@@ -91,7 +93,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-
+        <SiteHeader />
         {/* Main content */}
         <main id="main-content" className="relative flex min-h-screen flex-col">
           {children}

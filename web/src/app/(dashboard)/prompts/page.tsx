@@ -1,7 +1,7 @@
 import { getPrompts } from '@/lib/db/queries/prompts'
 import { PromptCard } from '@/components/prompts/prompt-card'
 import { PromptSearch } from '@/components/prompts/prompt-search'
-import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,8 +11,7 @@ type Props = {
 
 export default async function PromptsPage({ searchParams }: Props) {
     const { q } = await searchParams
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     const prompts = await getPrompts(50, 0, q, user?.id)
 

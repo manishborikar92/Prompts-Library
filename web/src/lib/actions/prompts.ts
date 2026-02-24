@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { prompts } from '@/lib/db/schema'
 import { promptSchema } from '@/lib/validations/prompts'
@@ -15,8 +15,7 @@ export type ActionState = {
 }
 
 export async function createPrompt(prevState: ActionState, formData: FormData): Promise<ActionState> {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     if (!user) {
         return { error: 'You must be logged in to create a prompt' }
@@ -75,8 +74,7 @@ export async function createPrompt(prevState: ActionState, formData: FormData): 
 }
 
 export async function updatePrompt(id: string, prevState: ActionState, formData: FormData): Promise<ActionState> {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     if (!user) {
         return { error: 'You must be logged in to edit a prompt' }
@@ -142,8 +140,7 @@ export async function updatePrompt(id: string, prevState: ActionState, formData:
 }
 
 export async function deletePrompt(id: string): Promise<ActionState> {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     if (!user) return { error: 'Unauthorized' }
 

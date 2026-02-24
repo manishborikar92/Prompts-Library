@@ -29,9 +29,26 @@ export async function GET(request: Request) {
 
     if (code) {
         const supabase = await createClient()
-        const { error } = await supabase.auth.exchangeCodeForSession(code)
+        const { error, data } = await supabase.auth.exchangeCodeForSession(code)
 
-        if (!error) {
+        if (!error && data?.user) {
+            // Ensure the user exists in our local users table
+            // This is a fallback in case the Supabase Postgres trigger wasn't set up
+            try {
+                const { db } = await import('@/lib/db')
+                const { users } = await import('@/lib/db/schema')
+
+                await db.insert(users).values({
+                    id: data.user.id,
+                    email: data.user.email!,
+                    name: data.user.user_metadata?.full_name || data.user.user_metadata?.name || '',
+                    image: data.user.user_metadata?.avatar_url || '',
+                }).onConflictDoNothing()
+            } catch (dbError) {
+                console.error('Failed to sync user to database:', dbError)
+                // Continue with sign in even if sync fails, though they might hit FK errors later
+            }
+
             const isLocalEnv = process.env.NODE_ENV === 'development'
             const appUrl = process.env.NEXT_PUBLIC_APP_URL
 

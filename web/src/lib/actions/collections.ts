@@ -1,14 +1,13 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { collections, collectionPrompts } from '@/lib/db/schema'
 import { eq, and, desc } from 'drizzle-orm'
 
 export async function createCollection(formData: FormData) {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
 
     if (!user) return { error: 'Unauthorized' }
 
@@ -35,8 +34,7 @@ export async function createCollection(formData: FormData) {
 }
 
 export async function addToCollection(collectionId: string, promptId: string) {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
     if (!user) return { error: 'Unauthorized' }
 
     try {
@@ -65,8 +63,7 @@ export async function addToCollection(collectionId: string, promptId: string) {
 }
 
 export async function getUserCollections() {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getUser()
     if (!user) return []
 
     return await db.query.collections.findMany({
